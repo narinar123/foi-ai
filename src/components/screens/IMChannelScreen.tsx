@@ -22,8 +22,8 @@ interface Message {
 const INITIAL_MESSAGES: Message[] = [
   {
     id: '1',
-    sender: 'QoderWork',
-    content: "Hello! I'm QoderWork, your AI assistant. How can I help you today? I can help you organize files, create content, write code, research topics, and much more.",
+    sender: 'FOI.AI',
+    content: "Hello! I'm FOI.AI, your AI assistant. How can I help you today? I can help you organize files, create content, write code, research topics, and much more.",
     timestamp: '9:00 AM',
     isAI: true,
     avatar: '👾',
@@ -38,7 +38,7 @@ const INITIAL_MESSAGES: Message[] = [
   },
   {
     id: '3',
-    sender: 'QoderWork',
+    sender: 'FOI.AI',
     content: "I'll help you organize your social media files and create a posting schedule! Here's my plan:\n\n1. **Audit existing files** — scan your social media folder for images, videos, and copy.\n2. **Categorize by platform** — organize into Instagram, Twitter, LinkedIn, Facebook folders.\n3. **Create posting calendar** — build a 30-day content calendar with optimal posting times.\n4. **Generate templates** — create reusable templates for each platform's format.\n\nShall I proceed?",
     timestamp: '9:02 AM',
     isAI: true,
@@ -54,7 +54,7 @@ const INITIAL_MESSAGES: Message[] = [
   },
   {
     id: '5',
-    sender: 'QoderWork',
+    sender: 'FOI.AI',
     content: "✅ Task started! I'm now:\n• Scanning your Downloads and Desktop folders...\n• Found 47 social media assets\n• Organizing them into platform-specific folders\n\nThis should take about 2 minutes. I'll notify you when it's done.",
     timestamp: '9:03 AM',
     isAI: true,
@@ -113,7 +113,7 @@ export default function IMChannelScreen() {
     setTimeout(() => {
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
-        sender: 'QoderWork',
+        sender: 'FOI.AI',
         content: AI_RESPONSES[Math.floor(Math.random() * AI_RESPONSES.length)],
         timestamp: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
         isAI: true,
@@ -169,7 +169,7 @@ export default function IMChannelScreen() {
               <span># {ch.name}</span>
               {ch.unread > 0 && (
                 <span style={{
-                  background: '#22c55e', color: '#000', borderRadius: '50%',
+                  background: '#d97757', color: '#000', borderRadius: '50%',
                   width: 16, height: 16, display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: 10, fontWeight: 600,
                 }}>
@@ -185,7 +185,7 @@ export default function IMChannelScreen() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         {/* Channel header */}
         <div className="channel-header">
-          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e' }} />
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#d97757' }} />
           <span style={{ fontSize: 14, fontWeight: 500 }}>
             # {CHANNELS.find(c => c.id === activeChannelId)?.name || 'General'}
           </span>
@@ -204,7 +204,7 @@ export default function IMChannelScreen() {
               <div key={msg.id} className="chat-message" style={{ marginBottom: 4 }}>
                 <div style={{
                   width: 32, height: 32, borderRadius: 8, flexShrink: 0,
-                  background: msg.isAI ? 'linear-gradient(135deg, #4ade80, #22c55e)' : 'linear-gradient(135deg, #6366f1, #4f46e5)',
+                  background: msg.isAI ? 'linear-gradient(135deg, #d97757, #d97757)' : 'linear-gradient(135deg, #6366f1, #4f46e5)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: msg.isAI ? 18 : 13, fontWeight: 600, color: msg.isAI ? '#000' : '#fff',
                 }}>
@@ -212,7 +212,7 @@ export default function IMChannelScreen() {
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 3 }}>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: msg.isAI ? '#4ade80' : '#fff' }}>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: msg.isAI ? '#d97757' : '#fff' }}>
                       {msg.sender}
                     </span>
                     <span style={{ fontSize: 11, color: '#444' }}>{msg.timestamp}</span>
@@ -232,7 +232,7 @@ export default function IMChannelScreen() {
             <div className="chat-message" style={{ marginBottom: 4 }}>
               <div style={{
                 width: 32, height: 32, borderRadius: 8, flexShrink: 0,
-                background: 'linear-gradient(135deg, #4ade80, #22c55e)',
+                background: 'linear-gradient(135deg, #d97757, #d97757)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
               }}>
                 👾
@@ -240,7 +240,7 @@ export default function IMChannelScreen() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 4, paddingTop: 8 }}>
                 {[0, 1, 2].map(i => (
                   <div key={i} style={{
-                    width: 6, height: 6, borderRadius: '50%', background: '#22c55e',
+                    width: 6, height: 6, borderRadius: '50%', background: '#d97757',
                     animation: `pulse-dot 1.2s ${i * 0.2}s infinite`,
                     opacity: 0.6,
                   }} />

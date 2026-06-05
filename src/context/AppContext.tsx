@@ -101,7 +101,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setTimeout(() => {
       const aiMsg: ChannelMessage = {
         id: (Date.now() + 1).toString(),
-        sender: 'QoderWork',
+        sender: 'FOI.AI',
         content: `I'll help you with that. Let me plan and execute your request: "${content}"`,
         timestamp: new Date(),
         isAI: true,

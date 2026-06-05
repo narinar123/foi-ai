@@ -21,23 +21,23 @@ export default function AppUpdateScreen() {
       <div style={{ flex: 1, overflowY: 'auto', padding: '24px 32px', maxWidth: 600 }}>
         <div style={{ marginBottom: 28 }}>
           <h1 style={{ fontSize: 22, fontWeight: 600, marginBottom: 4 }}>App Update</h1>
-          <p style={{ fontSize: 13, color: '#666' }}>Manage updates and release channels for QoderWork.</p>
+          <p style={{ fontSize: 13, color: '#666' }}>Manage updates and release channels for FOI.AI.</p>
         </div>
 
         {/* Current version card */}
         <div className="card" style={{ padding: '24px', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 16 }}>
           <div style={{
             width: 56, height: 56, borderRadius: 14,
-            background: 'linear-gradient(135deg, #4ade80, #22c55e)',
+            background: 'linear-gradient(135deg, #d97757, #d97757)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28,
           }}>
             👾
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 2 }}>QoderWork</div>
+            <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 2 }}>FOI.AI</div>
             <div style={{ fontSize: 13, color: '#666', marginBottom: 8 }}>Version 1.2.4 · Released May 28, 2026</div>
             {status === 'upToDate' && (
-              <div style={{ fontSize: 12, color: '#22c55e', display: 'flex', alignItems: 'center', gap: 4 }}>
+              <div style={{ fontSize: 12, color: '#d97757', display: 'flex', alignItems: 'center', gap: 4 }}>
                 ✓ You're up to date
               </div>
             )}

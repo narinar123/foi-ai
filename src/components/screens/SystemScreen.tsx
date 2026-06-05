@@ -113,7 +113,7 @@ export default function SystemScreen() {
               { label: 'Clear Cache', color: '#2a2a2a', textColor: '#888' },
               { label: 'Export Logs', color: '#2a2a2a', textColor: '#888' },
               { label: 'Reset Settings', color: '#2a2a2a', textColor: '#888' },
-              { label: 'Check for Updates', color: '#22c55e15', textColor: '#22c55e' },
+              { label: 'Check for Updates', color: '#d9775715', textColor: '#d97757' },
             ].map(btn => (
               <button key={btn.label} style={{
                 background: btn.color, border: '1px solid #333', color: btn.textColor,

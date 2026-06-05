@@ -2,249 +2,172 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '@/context/AppContext';
 
-const QoderMascot = () => (
-  <div style={{
-    width: 56,
-    height: 56,
-    borderRadius: 14,
-    background: 'linear-gradient(135deg, #4ade80, #22c55e)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: 28,
-    flexShrink: 0,
-  }}>
-    👾
-  </div>
-);
-
-const ArrowUpIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
-  </svg>
-);
-
-const MicIcon = () => (
+const ChevronDown = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/>
-    <line x1="8" y1="23" x2="16" y2="23"/>
-  </svg>
-);
-
-const PlusIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M12 5v14M5 12h14"/>
-  </svg>
-);
-
-const FolderIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-  </svg>
-);
-
-const ChevronDownIcon = () => (
-  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <polyline points="6 9 12 15 18 9"/>
   </svg>
 );
+const SendIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+  </svg>
+);
+const PaperclipIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+  </svg>
+);
+const MicIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+  </svg>
+);
 
-const MODELS = ['Qwen3.7-Max', 'Qwen3.7-Mini', 'GPT-4o', 'Claude 3.5', 'Gemini 2.0'];
-const CHANNELS = ['General', 'Work', 'Personal', 'Research'];
-const TOOL_CHIPS = ['α', 'Ċ', 'Ĉ', 'Ē', '+5'];
+const MODELS = ['Qwen3.7-Max', 'GPT-4o', 'Claude 3.5', 'Gemini 2.0'];
+const QUICK_ACTIONS = [
+  { icon: '📝', label: 'Summarize text' },
+  { icon: '✉️', label: 'Draft email' },
+  { icon: '💻', label: 'Code review' },
+  { icon: '📊', label: 'Analyze data' },
+];
 
 export default function HomeScreen() {
-  const { addTask, currentModel, setCurrentModel, currentChannel, setCurrentChannel } = useApp();
-  const [inputValue, setInputValue] = useState('');
-  const [showModelPicker, setShowModelPicker] = useState(false);
-  const [showChannelPicker, setShowChannelPicker] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { currentModel, setCurrentModel, currentChannel, setCurrentChannel, messages, addMessage } = useApp();
+  const [input, setInput] = useState('');
+  const [showModels, setShowModels] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleSubmit = () => {
-    if (!inputValue.trim()) return;
-    addTask(inputValue.trim());
-    setInputValue('');
-    if (textareaRef.current) textareaRef.current.style.height = 'auto';
-  };
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit();
-    }
-  };
-
-  const handleInput = () => {
-    const ta = textareaRef.current;
-    if (!ta) return;
-    ta.style.height = 'auto';
-    ta.style.height = Math.min(ta.scrollHeight, 200) + 'px';
+  const handleSend = () => {
+    if (!input.trim()) return;
+    addMessage(input);
+    setInput('');
   };
 
   return (
-    <div style={{
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '40px',
-      background: '#1a1a1a',
-      position: 'relative',
-    }}>
-      {/* Center content */}
-      <div style={{ width: '100%', maxWidth: 580, animation: 'fadeIn 0.3s ease' }}>
-        {/* Mascot + heading */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: 28 }}>
-          <QoderMascot />
-          <h1 style={{ fontSize: 28, fontWeight: 600, marginTop: 16, marginBottom: 8, color: '#fff' }}>
-            Beyond chat, get it done.
-          </h1>
-          <p style={{ fontSize: 14, color: '#666', lineHeight: 1.5 }}>
-            Just tell QoderWork what you need — it plans, executes, and delivers, keeping you in the loop.
-          </p>
-        </div>
-
-        {/* Chat input */}
-        <div className="chat-input-container">
-          <textarea
-            ref={textareaRef}
-            className="chat-input"
-            placeholder="Describe a task, / for shortcuts, @ to add context"
-            value={inputValue}
-            onChange={e => { setInputValue(e.target.value); handleInput(); }}
-            onKeyDown={handleKeyDown}
-            rows={1}
-            style={{ minHeight: 24, maxHeight: 200 }}
-          />
-
-          {/* Toolbar */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              {/* Attachment */}
-              <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666', padding: 4, borderRadius: 4, display: 'flex', alignItems: 'center' }}
-                className="sidebar-item">
-                <PlusIcon />
-              </button>
-
-              {/* Tool chips */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                background: '#2a2a2a',
-                border: '1px solid #333',
-                borderRadius: 6,
-                padding: '3px 8px',
-                gap: 4,
-                cursor: 'pointer',
-                fontSize: 12,
-                color: '#888',
-              }}>
-                {TOOL_CHIPS.map((chip, i) => (
-                  <span key={i}>{chip}</span>
-                ))}
-              </div>
-
-              {/* Channel picker */}
-              <div style={{ position: 'relative' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
+      
+      {/* Top Header */}
+      <div style={{
+        height: 60, borderBottom: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px', gap: 12, background: 'var(--bg-app)'
+      }}>
+        {/* Model Picker */}
+        <div style={{ position: 'relative' }}>
+          <button
+            onClick={() => setShowModels(!showModels)}
+            className="btn-secondary"
+            style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', borderRadius: 20 }}
+          >
+            <span style={{ color: 'var(--accent)', fontWeight: 600 }}>✨</span>
+            {currentModel}
+            <ChevronDown />
+          </button>
+          {showModels && (
+            <div className="card animate-fade-in" style={{
+              position: 'absolute', top: '100%', left: 0, marginTop: 8, padding: 8, width: 200, zIndex: 100
+            }}>
+              {MODELS.map(m => (
                 <button
-                  onClick={() => setShowChannelPicker(!showChannelPicker)}
-                  className="custom-select"
-                  style={{ fontSize: 12, color: '#888', padding: '3px 8px', position: 'relative' }}
+                  key={m}
+                  onClick={() => { setCurrentModel(m); setShowModels(false); }}
+                  className="sidebar-item"
+                  style={{ width: '100%', border: 'none', background: currentModel === m ? 'var(--accent-transparent)' : 'none', color: currentModel === m ? 'var(--accent)' : 'var(--text-primary)' }}
                 >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                  </svg>
-                  {currentChannel}
-                  <div style={{ position: 'absolute', top: -2, right: -2, width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }} />
-                  <ChevronDownIcon />
+                  {m}
                 </button>
-                {showChannelPicker && (
-                  <div style={{
-                    position: 'absolute', bottom: '100%', left: 0, marginBottom: 4,
-                    background: '#1f1f1f', border: '1px solid #333', borderRadius: 8,
-                    padding: 4, zIndex: 100, minWidth: 120,
-                  }}>
-                    {CHANNELS.map(ch => (
-                      <button
-                        key={ch}
-                        onClick={() => { setCurrentChannel(ch); setShowChannelPicker(false); }}
-                        className="sidebar-item"
-                        style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', justifyContent: 'flex-start', fontSize: 13 }}
-                      >
-                        {ch}
-                      </button>
-                    ))}
-                  </div>
-                )}
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Messages Area */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: 24 }}>
+        {messages.length === 0 ? (
+          <div style={{ margin: 'auto', textAlign: 'center', maxWidth: 600, animation: 'fadeIn 0.5s ease' }}>
+            <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 16, background: 'linear-gradient(135deg, #fff 0%, #a1a1aa 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              How can I help you today?
+            </h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: 16, marginBottom: 40 }}>
+              Describe a task, ask a question, or let FOI.AI handle complex workflows automatically.
+            </p>
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+              {QUICK_ACTIONS.map(action => (
+                <button
+                  key={action.label}
+                  onClick={() => addMessage(action.label)}
+                  className="card"
+                  style={{ padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}
+                >
+                  <span>{action.icon}</span>
+                  <span style={{ fontSize: 14, fontWeight: 500 }}>{action.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          messages.map(msg => (
+            <div key={msg.id} className="animate-slide-in" style={{
+              display: 'flex', gap: 16, maxWidth: 800, margin: '0 auto', width: '100%',
+              flexDirection: msg.isAI ? 'row' : 'row-reverse'
+            }}>
+              <div className={`avatar ${msg.isAI ? 'avatar-ai' : 'avatar-user'}`}>
+                {msg.isAI ? 'F' : 'U'}
+              </div>
+              <div className={`msg-bubble ${msg.isAI ? 'msg-ai' : 'msg-user'}`}>
+                {msg.content}
               </div>
             </div>
+          ))
+        )}
+        <div ref={messagesEndRef} />
+      </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              {/* Model picker */}
-              <div style={{ position: 'relative' }}>
-                <button
-                  onClick={() => setShowModelPicker(!showModelPicker)}
-                  className="custom-select"
-                  style={{ fontSize: 12, color: '#888', padding: '3px 8px' }}
-                >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
-                  </svg>
-                  {currentModel}
-                  <ChevronDownIcon />
+      {/* Input Area */}
+      <div style={{ padding: '24px', background: 'linear-gradient(to top, var(--bg-app) 50%, transparent)' }}>
+        <div style={{ maxWidth: 800, margin: '0 auto' }}>
+          <div className="chat-input-wrapper">
+            <textarea
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+              placeholder="Ask FOI.AI anything or describe a workflow..."
+              className="chat-input"
+              rows={1}
+            />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 16px 16px' }}>
+              <div style={{ display: 'flex', gap: 12, color: 'var(--text-muted)' }}>
+                <button style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 4 }} className="sidebar-item">
+                  <PaperclipIcon />
                 </button>
-                {showModelPicker && (
-                  <div style={{
-                    position: 'absolute', bottom: '100%', right: 0, marginBottom: 4,
-                    background: '#1f1f1f', border: '1px solid #333', borderRadius: 8,
-                    padding: 4, zIndex: 100, minWidth: 150,
-                  }}>
-                    {MODELS.map(m => (
-                      <button
-                        key={m}
-                        onClick={() => { setCurrentModel(m); setShowModelPicker(false); }}
-                        className="sidebar-item"
-                        style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', justifyContent: 'flex-start', fontSize: 13 }}
-                      >
-                        {m}
-                      </button>
-                    ))}
-                  </div>
-                )}
+                <button style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 4 }} className="sidebar-item">
+                  <MicIcon />
+                </button>
               </div>
-
-              {/* Mic */}
-              <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666', padding: 4, borderRadius: 4 }}
-                className="sidebar-item">
-                <MicIcon />
-              </button>
-
-              {/* Send */}
               <button
-                className="send-btn"
-                onClick={handleSubmit}
-                disabled={!inputValue.trim()}
-                style={{ opacity: inputValue.trim() ? 1 : 0.5 }}
+                onClick={handleSend}
+                disabled={!input.trim()}
+                className="btn-primary"
+                style={{
+                  width: 36, height: 36, padding: 0, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  opacity: input.trim() ? 1 : 0.5, pointerEvents: input.trim() ? 'auto' : 'none'
+                }}
               >
-                <ArrowUpIcon />
+                <SendIcon />
               </button>
             </div>
           </div>
-        </div>
-
-        {/* Work in folder */}
-        <div style={{ marginTop: 12, display: 'flex', alignItems: 'center' }}>
-          <button style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            background: 'none', border: 'none', cursor: 'pointer',
-            color: '#555', fontSize: 12, padding: '4px 0',
-          }}>
-            <FolderIcon />
-            Work in a Folder
-            <ChevronDownIcon />
-          </button>
+          <div style={{ textAlign: 'center', marginTop: 12, fontSize: 11, color: 'var(--text-muted)' }}>
+            FOI.AI can make mistakes. Consider verifying important information.
+          </div>
         </div>
       </div>
     </div>

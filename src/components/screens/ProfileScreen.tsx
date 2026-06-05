@@ -28,7 +28,7 @@ export default function ProfileScreen() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 28 }}>
           <div style={{
             width: 72, height: 72, borderRadius: 18,
-            background: 'linear-gradient(135deg, #4ade80, #22c55e)',
+            background: 'linear-gradient(135deg, #d97757, #d97757)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 28, fontWeight: 700, color: '#000',
           }}>
@@ -98,7 +98,7 @@ export default function ProfileScreen() {
               <div style={{ fontSize: 12, color: '#666', marginTop: 3 }}>Expires in 14 days · All features included</div>
             </div>
             <button style={{
-              background: 'linear-gradient(135deg, #4ade80, #22c55e)',
+              background: 'linear-gradient(135deg, #d97757, #d97757)',
               border: 'none', color: '#000', borderRadius: 6,
               padding: '7px 14px', fontSize: 13, cursor: 'pointer', fontWeight: 600,
             }}>
@@ -112,8 +112,8 @@ export default function ProfileScreen() {
           <button
             onClick={handleSave}
             style={{
-              background: saved ? '#22c55e' : '#22c55e15',
-              border: '1px solid #22c55e', color: saved ? '#000' : '#22c55e',
+              background: saved ? '#d97757' : '#d9775715',
+              border: '1px solid #d97757', color: saved ? '#000' : '#d97757',
               borderRadius: 6, padding: '8px 20px', fontSize: 13, cursor: 'pointer', fontWeight: 500,
               transition: 'all 0.2s',
             }}

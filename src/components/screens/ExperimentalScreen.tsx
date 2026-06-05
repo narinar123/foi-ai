@@ -12,7 +12,7 @@ const EXPERIMENTS = [
 ];
 
 const RISK_COLOR: Record<string, string> = {
-  low: '#22c55e',
+  low: '#d97757',
   medium: '#f59e0b',
   high: '#ef4444',
 };

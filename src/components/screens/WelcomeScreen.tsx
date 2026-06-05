@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { useApp } from '@/context/AppContext';
 
 const ChevronDown = () => (
@@ -9,6 +10,13 @@ const ChevronDown = () => (
 );
 
 const LANGUAGES = ['English', '中文', 'Español', 'Français', 'Deutsch'];
+
+// Authorized universal users
+const AUTHORIZED_USERS: Record<string, string> = {
+  'pranu21m@foi.ai': 'foi2024!',
+  'praul@foi.ai': 'foi2024!',
+  // allow any email + password for demo
+};
 
 export default function WelcomeScreen() {
   const { setCurrentScreen, setIsAuthenticated } = useApp();
@@ -20,15 +28,23 @@ export default function WelcomeScreen() {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleAuth = () => {
     if (!email || !password) return;
+    setError('');
     setLoading(true);
     setTimeout(() => {
       setIsAuthenticated(true);
       setLoading(false);
       setCurrentScreen('home');
-    }, 1200);
+    }, 1000);
+  };
+
+  const fillUniversalUser = (user: string) => {
+    setEmail(user);
+    setPassword('foi2024!');
+    setError('');
   };
 
   return (
@@ -37,39 +53,40 @@ export default function WelcomeScreen() {
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       position: 'relative',
     }}>
-      {/* Background subtle gradient */}
+      {/* Subtle orange glow background */}
       <div style={{
-        position: 'absolute', inset: 0, opacity: 0.03,
-        background: 'radial-gradient(circle at 70% 50%, #4ade80 0%, transparent 50%)',
+        position: 'absolute', inset: 0, opacity: 0.04,
+        background: 'radial-gradient(circle at 70% 50%, #d97757 0%, transparent 50%)',
         pointerEvents: 'none',
       }} />
 
-      {/* Main content - two column layout matching screenshot */}
+      {/* Main content - two column layout */}
       <div style={{
         display: 'flex', gap: 48, alignItems: 'center',
         padding: '0 60px', maxWidth: 900, width: '100%',
       }}>
         {/* Left: Login form area */}
         <div style={{ flex: 1 }}>
-          {/* Logo */}
-          <div style={{
-            width: 48, height: 48, borderRadius: 12,
-            background: 'linear-gradient(135deg, #4ade80, #22c55e)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 24, marginBottom: 24,
-          }}>
-            👾
+          {/* GS Logo */}
+          <div style={{ marginBottom: 20 }}>
+            <Image
+              src="/gslogo.png"
+              alt="FOI.AI Logo"
+              width={56}
+              height={56}
+              style={{ borderRadius: 12, objectFit: 'contain' }}
+            />
           </div>
 
           {/* Heading */}
-          <h1 style={{ fontSize: 26, fontWeight: 600, marginBottom: 8, color: '#fff' }}>
-            Welcome to QoderWork
+          <h1 style={{ fontSize: 26, fontWeight: 600, marginBottom: 6, color: '#fff' }}>
+            Welcome to FOI.AI
           </h1>
-          <p style={{ fontSize: 13, color: '#666', marginBottom: 8 }}>
+          <p style={{ fontSize: 13, color: '#666', marginBottom: 6 }}>
             AI desktop assistant for everyone
           </p>
           <p style={{ fontSize: 13, color: '#555', lineHeight: 1.6, marginBottom: 32 }}>
-            Bringing agentic capabilities beyond code. Describe what you need — QoderWork plans, executes, and delivers.
+            Bringing agentic capabilities beyond code. Describe what you need — FOI.AI plans, executes, and delivers.
           </p>
 
           {/* Login/Register button */}
@@ -78,14 +95,14 @@ export default function WelcomeScreen() {
               id="login-register-btn"
               onClick={() => setShowAuthModal(true)}
               style={{
-                background: '#fff', color: '#000', border: 'none', borderRadius: 8,
+                background: '#d97757', color: '#fff', border: 'none', borderRadius: 8,
                 padding: '10px 24px', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-                transition: 'all 0.15s',
+                transition: 'all 0.15s', boxShadow: '0 2px 12px rgba(217,119,87,0.4)',
               }}
-              onMouseEnter={e => { (e.target as HTMLElement).style.background = '#f0f0f0'; }}
-              onMouseLeave={e => { (e.target as HTMLElement).style.background = '#fff'; }}
+              onMouseEnter={e => { (e.target as HTMLElement).style.background = '#c2633d'; }}
+              onMouseLeave={e => { (e.target as HTMLElement).style.background = '#d97757'; }}
             >
-              Login/Register
+              Login / Register
             </button>
 
             {/* Language selector */}
@@ -127,11 +144,11 @@ export default function WelcomeScreen() {
           </button>
         </div>
 
-        {/* Right: Green card */}
+        {/* Right: Orange accent card */}
         <div style={{ width: 300, height: 330, flexShrink: 0 }}>
-          <div className="green-card" style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'flex-end', padding: 20 }}>
+          <div className="orange-card" style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'flex-end', padding: 20 }}>
             <div style={{ position: 'relative', zIndex: 1 }}>
-              <p style={{ fontSize: 18, fontWeight: 600, color: '#000', lineHeight: 1.3 }}>
+              <p style={{ fontSize: 18, fontWeight: 600, color: '#fff', lineHeight: 1.3, textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}>
                 Go from answers to action with your agentic work partner
               </p>
             </div>
@@ -142,7 +159,7 @@ export default function WelcomeScreen() {
       {/* Auth modal */}
       {showAuthModal && (
         <div style={{
-          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)',
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           zIndex: 1000, animation: 'fadeIn 0.2s ease',
         }}
@@ -150,16 +167,23 @@ export default function WelcomeScreen() {
         >
           <div style={{
             background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 16,
-            padding: '32px', width: 380, animation: 'fadeIn 0.2s ease',
+            padding: '32px', width: 400, animation: 'fadeIn 0.2s ease', position: 'relative',
           }}>
-            {/* Logo */}
-            <div style={{
-              width: 40, height: 40, borderRadius: 10,
-              background: 'linear-gradient(135deg, #4ade80, #22c55e)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 20, marginBottom: 20,
-            }}>
-              👾
+            {/* Close button */}
+            <button
+              onClick={() => setShowAuthModal(false)}
+              style={{
+                position: 'absolute', top: 16, right: 16,
+                background: 'none', border: 'none', color: '#555', cursor: 'pointer', fontSize: 20, lineHeight: 1,
+              }}
+            >
+              ×
+            </button>
+
+            {/* Logo + title */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+              <Image src="/gslogo.png" alt="FOI.AI" width={36} height={36} style={{ borderRadius: 8 }} />
+              <span style={{ fontSize: 18, fontWeight: 700, color: '#d97757' }}>FOI.AI</span>
             </div>
 
             {/* Tabs */}
@@ -167,7 +191,7 @@ export default function WelcomeScreen() {
               {(['login', 'register'] as const).map(mode => (
                 <button
                   key={mode}
-                  onClick={() => setAuthMode(mode)}
+                  onClick={() => { setAuthMode(mode); setError(''); }}
                   style={{
                     flex: 1, background: authMode === mode ? '#2a2a2a' : 'none',
                     border: 'none', borderRadius: 6, padding: '7px',
@@ -186,7 +210,7 @@ export default function WelcomeScreen() {
               <div style={{ marginBottom: 12 }}>
                 <label style={{ fontSize: 12, color: '#666', display: 'block', marginBottom: 5 }}>Full Name</label>
                 <input
-                  placeholder="Praveen k"
+                  placeholder="Your name"
                   value={name}
                   onChange={e => setName(e.target.value)}
                   style={{
@@ -200,22 +224,22 @@ export default function WelcomeScreen() {
               <label style={{ fontSize: 12, color: '#666', display: 'block', marginBottom: 5 }}>Email</label>
               <input
                 type="email"
-                placeholder="you@example.com"
+                placeholder="you@foi.ai"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={e => { setEmail(e.target.value); setError(''); }}
                 style={{
                   background: '#111', border: '1px solid #333', borderRadius: 8,
                   padding: '10px 12px', color: '#fff', fontSize: 13, outline: 'none', width: '100%',
                 }}
               />
             </div>
-            <div style={{ marginBottom: 20 }}>
+            <div style={{ marginBottom: 16 }}>
               <label style={{ fontSize: 12, color: '#666', display: 'block', marginBottom: 5 }}>Password</label>
               <input
                 type="password"
                 placeholder="••••••••"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={e => { setPassword(e.target.value); setError(''); }}
                 onKeyDown={e => e.key === 'Enter' && handleAuth()}
                 style={{
                   background: '#111', border: '1px solid #333', borderRadius: 8,
@@ -224,36 +248,49 @@ export default function WelcomeScreen() {
               />
             </div>
 
+            {error && (
+              <div style={{ fontSize: 12, color: '#ef4444', marginBottom: 12, padding: '8px 12px', background: '#ef444410', borderRadius: 6, border: '1px solid #ef444430' }}>
+                {error}
+              </div>
+            )}
+
             <button
               onClick={handleAuth}
               disabled={loading || !email || !password}
               style={{
                 width: '100%',
-                background: loading || !email || !password ? '#1a2e1a' : 'linear-gradient(135deg, #4ade80, #22c55e)',
+                background: loading || !email || !password ? '#2e1a0a' : '#d97757',
                 border: 'none', borderRadius: 8, padding: '11px',
-                color: loading || !email || !password ? '#555' : '#000',
+                color: loading || !email || !password ? '#555' : '#fff',
                 fontSize: 14, fontWeight: 600, cursor: loading || !email || !password ? 'not-allowed' : 'pointer',
-                transition: 'all 0.2s',
+                transition: 'all 0.2s', boxShadow: !loading && email && password ? '0 2px 12px rgba(217,119,87,0.35)' : 'none',
               }}
             >
               {loading ? 'Authenticating...' : authMode === 'login' ? 'Sign In' : 'Create Account'}
             </button>
 
-            {/* Demo shortcut */}
-            <button
-              onClick={() => {
-                setEmail('demo@qoderwork.com');
-                setPassword('demo1234');
-              }}
-              style={{ width: '100%', marginTop: 10, background: 'none', border: '1px solid #222', borderRadius: 8, padding: '9px', color: '#555', fontSize: 12, cursor: 'pointer' }}
-            >
-              Use Demo Account
-            </button>
-
-            <button
-              onClick={() => setShowAuthModal(false)}
-              style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: '#555', cursor: 'pointer', fontSize: 20, lineHeight: 1 }}
-            />
+            {/* Universal access accounts */}
+            <div style={{ marginTop: 16, padding: '12px', background: '#111', borderRadius: 8, border: '1px solid #2a2a2a' }}>
+              <div style={{ fontSize: 11, color: '#555', marginBottom: 8, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Universal Access Accounts
+              </div>
+              {['pranu21m@foi.ai', 'praul@foi.ai'].map(user => (
+                <button
+                  key={user}
+                  onClick={() => fillUniversalUser(user)}
+                  style={{
+                    display: 'block', width: '100%', textAlign: 'left',
+                    background: email === user ? '#d9775715' : 'none',
+                    border: email === user ? '1px solid #d9775740' : '1px solid transparent',
+                    color: email === user ? '#d97757' : '#666', borderRadius: 6,
+                    padding: '6px 10px', fontSize: 12, cursor: 'pointer', marginBottom: 4,
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  {email === user ? '✓ ' : ''}{user}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}

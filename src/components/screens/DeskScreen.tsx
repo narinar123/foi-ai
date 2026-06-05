@@ -1,151 +1,123 @@
 'use client';
 import React, { useState } from 'react';
 
+type TaskStatus = 'Todo' | 'In Progress' | 'In Review' | 'Done';
+
+interface KanbanTask {
+  id: string;
+  title: string;
+  status: TaskStatus;
+  priority: 'High' | 'Medium' | 'Low';
+  assignee: string;
+}
+
+const INITIAL_TASKS: KanbanTask[] = [
+  { id: 't1', title: 'Design System Update', status: 'Todo', priority: 'High', assignee: 'Praveen' },
+  { id: 't2', title: 'Implement Kanban Drag & Drop', status: 'In Progress', priority: 'High', assignee: 'FOI.AI' },
+  { id: 't3', title: 'Update globals.css', status: 'Done', priority: 'Medium', assignee: 'FOI.AI' },
+  { id: 't4', title: 'Fix deployment errors', status: 'In Review', priority: 'High', assignee: 'FOI.AI' },
+];
+
+const COLUMNS: TaskStatus[] = ['Todo', 'In Progress', 'In Review', 'Done'];
+
 export default function DeskScreen() {
-  const [activeView, setActiveView] = useState<'board' | 'list' | 'calendar'>('board');
+  const [tasks, setTasks] = useState<KanbanTask[]>(INITIAL_TASKS);
+  const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
 
-  const columns = [
-    { id: 'todo', label: 'To Do', color: '#555', items: [
-      { id: '1', title: 'Create social media strategy', priority: 'high', tags: ['Marketing'] },
-      { id: '2', title: 'Research competitor products', priority: 'medium', tags: ['Research'] },
-      { id: '3', title: 'Design new landing page', priority: 'low', tags: ['Design'] },
-    ]},
-    { id: 'in-progress', label: 'In Progress', color: '#f59e0b', items: [
-      { id: '4', title: 'Organize file system', priority: 'high', tags: ['Files', 'AI'] },
-      { id: '5', title: 'Write weekly report', priority: 'medium', tags: ['Writing'] },
-    ]},
-    { id: 'review', label: 'Review', color: '#6366f1', items: [
-      { id: '6', title: 'Monthly expense report', priority: 'high', tags: ['Finance'] },
-    ]},
-    { id: 'done', label: 'Done', color: '#22c55e', items: [
-      { id: '7', title: 'Set up GitHub repos', priority: 'low', tags: ['Dev'] },
-      { id: '8', title: 'Update team contacts', priority: 'low', tags: ['Admin'] },
-    ]},
-  ];
+  const handleDragStart = (e: React.DragEvent, id: string) => {
+    setDraggedTaskId(id);
+    e.dataTransfer.effectAllowed = 'move';
+    // Small delay to allow the drag image to be captured before changing opacity
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.style.opacity = '0.4';
+    }, 0);
+  };
 
-  const PRIORITY_COLOR: Record<string, string> = {
-    high: '#ef4444',
-    medium: '#f59e0b',
-    low: '#22c55e',
+  const handleDragEnd = (e: React.DragEvent, id: string) => {
+    setDraggedTaskId(null);
+    const el = document.getElementById(id);
+    if (el) el.style.opacity = '1';
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e: React.DragEvent, status: TaskStatus) => {
+    e.preventDefault();
+    if (!draggedTaskId) return;
+
+    setTasks(prev => prev.map(t => 
+      t.id === draggedTaskId ? { ...t, status } : t
+    ));
+    setDraggedTaskId(null);
+  };
+
+  const getPriorityColor = (p: string) => {
+    if (p === 'High') return 'var(--danger)';
+    if (p === 'Medium') return 'var(--warning)';
+    return 'var(--success)';
   };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: '#1a1a1a', overflow: 'hidden' }}>
-      {/* Desk header */}
-      <div style={{
-        height: 48, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 20px', borderBottom: '1px solid #222', flexShrink: 0,
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <h1 style={{ fontSize: 16, fontWeight: 600 }}>Desk</h1>
-          <span className="badge badge-beta">Beta</span>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 24 }}>
+      <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div>
+          <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Desk (Kanban)</h1>
+          <p style={{ color: 'var(--text-muted)' }}>Manage your tasks visually with full drag-and-drop support.</p>
         </div>
-        <div style={{ display: 'flex', gap: 4 }}>
-          {(['board', 'list', 'calendar'] as const).map(view => (
-            <button
-              key={view}
-              onClick={() => setActiveView(view)}
-              style={{
-                background: activeView === view ? '#2a2a2a' : 'none',
-                border: activeView === view ? '1px solid #333' : '1px solid transparent',
-                borderRadius: 5, padding: '4px 10px', fontSize: 12, cursor: 'pointer',
-                color: activeView === view ? '#fff' : '#666', transition: 'all 0.15s', textTransform: 'capitalize',
-              }}
-            >
-              {view === 'board' ? '⬛ Board' : view === 'list' ? '☰ List' : '📅 Calendar'}
-            </button>
-          ))}
-          <button style={{
-            background: '#22c55e15', border: '1px solid #22c55e', color: '#22c55e',
-            borderRadius: 5, padding: '4px 10px', fontSize: 12, cursor: 'pointer', marginLeft: 8,
-          }}>
-            + Add Task
-          </button>
-        </div>
+        <button className="btn-primary">+ Add Task</button>
       </div>
 
-      {/* Board view */}
-      {activeView === 'board' && (
-        <div style={{ flex: 1, overflowX: 'auto', overflowY: 'hidden', padding: '20px' }}>
-          <div style={{ display: 'flex', gap: 16, height: '100%', minWidth: 'max-content' }}>
-            {columns.map(col => (
-              <div key={col.id} style={{ width: 260, display: 'flex', flexDirection: 'column', gap: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: col.color }} />
-                  <span style={{ fontSize: 12, fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    {col.label}
-                  </span>
-                  <span style={{ fontSize: 11, color: '#444', marginLeft: 'auto' }}>{col.items.length}</span>
-                </div>
-                <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {col.items.map(item => (
-                    <div key={item.id} className="card" style={{ padding: '12px 14px', cursor: 'grab' }}>
-                      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 8 }}>
-                        <span style={{ fontSize: 13, fontWeight: 500, lineHeight: 1.4 }}>{item.title}</span>
-                        <div style={{
-                          width: 8, height: 8, borderRadius: '50%', flexShrink: 0, marginTop: 3,
-                          background: PRIORITY_COLOR[item.priority],
-                        }} />
-                      </div>
-                      <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                        {item.tags.map(tag => (
-                          <span key={tag} style={{
-                            fontSize: 10, padding: '1px 6px', borderRadius: 3,
-                            background: '#2a2a2a', color: '#666', border: '1px solid #333',
-                          }}>
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                  <button style={{
-                    width: '100%', background: 'none', border: '1px dashed #333',
-                    borderRadius: 6, padding: '8px', color: '#555', fontSize: 12, cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
-                  }}>
-                    + Add card
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* List view */}
-      {activeView === 'list' && (
-        <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
-          {columns.flatMap(col => col.items.map(item => (
-            <div key={item.id} className="card" style={{
-              padding: '12px 16px', marginBottom: 8,
-              display: 'flex', alignItems: 'center', gap: 12,
-            }}>
-              <div style={{ width: 8, height: 8, borderRadius: '50%', background: PRIORITY_COLOR[item.priority], flexShrink: 0 }} />
-              <span style={{ fontSize: 13, flex: 1 }}>{item.title}</span>
-              <span style={{ fontSize: 11, color: '#555', background: '#222', border: '1px solid #333', padding: '2px 8px', borderRadius: 3 }}>
-                {col.label}
+      <div style={{ display: 'flex', gap: 20, flex: 1, overflowX: 'auto', paddingBottom: 16 }}>
+        {COLUMNS.map(col => (
+          <div
+            key={col}
+            className="kanban-col"
+            style={{ width: 300, minWidth: 300 }}
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, col)}
+          >
+            {/* Column Header */}
+            <div style={{ padding: '16px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontWeight: 600, fontSize: 14 }}>{col}</span>
+              <span className="badge" style={{ background: 'var(--bg-panel)', border: '1px solid var(--border-default)', color: 'var(--text-secondary)' }}>
+                {tasks.filter(t => t.status === col).length}
               </span>
-              {item.tags.map(tag => (
-                <span key={tag} style={{ fontSize: 10, padding: '1px 6px', borderRadius: 3, background: '#2a2a2a', color: '#666', border: '1px solid #333' }}>
-                  {tag}
-                </span>
+            </div>
+
+            {/* Column Body */}
+            <div style={{ padding: 12, flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {tasks.filter(t => t.status === col).map(task => (
+                <div
+                  id={task.id}
+                  key={task.id}
+                  className="kanban-card"
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, task.id)}
+                  onDragEnd={(e) => handleDragEnd(e, task.id)}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+                    <span className="badge" style={{ color: getPriorityColor(task.priority), background: 'rgba(255,255,255,0.05)', border: `1px solid ${getPriorityColor(task.priority)}40` }}>
+                      {task.priority}
+                    </span>
+                    <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{task.id.toUpperCase()}</span>
+                  </div>
+                  <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 16, lineHeight: 1.4 }}>{task.title}</h3>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Assignee:</div>
+                    <div className="avatar" style={{ width: 24, height: 24, fontSize: 10, background: task.assignee === 'FOI.AI' ? 'linear-gradient(135deg, var(--accent), var(--accent-dark))' : '#333' }}>
+                      {task.assignee[0]}
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
-          )))}
-        </div>
-      )}
-
-      {/* Calendar view placeholder */}
-      {activeView === 'calendar' && (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#555' }}>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 48, marginBottom: 12 }}>📅</div>
-            <div style={{ fontSize: 14 }}>Calendar view coming soon</div>
-            <div style={{ fontSize: 12, marginTop: 4, color: '#444' }}>Switch to Board or List view</div>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 }

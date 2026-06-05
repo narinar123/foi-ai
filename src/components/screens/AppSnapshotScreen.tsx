@@ -19,10 +19,10 @@ export default function AppSnapshotScreen() {
               <h1 style={{ fontSize: 22, fontWeight: 600 }}>App Snapshot</h1>
               <span className="badge badge-beta">Beta</span>
             </div>
-            <p style={{ fontSize: 13, color: '#666' }}>Save and restore full QoderWork states including tasks, skills, and settings.</p>
+            <p style={{ fontSize: 13, color: '#666' }}>Save and restore full FOI.AI states including tasks, skills, and settings.</p>
           </div>
           <button style={{
-            background: '#22c55e15', border: '1px solid #22c55e', color: '#22c55e',
+            background: '#d9775715', border: '1px solid #d97757', color: '#d97757',
             borderRadius: 6, padding: '7px 14px', fontSize: 13, cursor: 'pointer', fontWeight: 500,
           }}>
             + Create Snapshot
@@ -99,7 +99,7 @@ export default function AppSnapshotScreen() {
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button style={{
-                  background: '#22c55e15', border: '1px solid #22c55e', color: '#22c55e',
+                  background: '#d9775715', border: '1px solid #d97757', color: '#d97757',
                   borderRadius: 5, padding: '5px 10px', fontSize: 11, cursor: 'pointer',
                 }}>
                   Restore

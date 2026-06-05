@@ -51,11 +51,11 @@ export default function VoiceInputScreen() {
         <div className="card" style={{ padding: '24px', marginBottom: 20, textAlign: 'center' }}>
           <div style={{
             width: 80, height: 80, borderRadius: '50%', margin: '0 auto 20px',
-            background: isListening ? 'radial-gradient(circle, #22c55e33, #22c55e11)' : '#222',
-            border: isListening ? '2px solid #22c55e' : '2px solid #333',
+            background: isListening ? 'radial-gradient(circle, #d9775733, #d9775711)' : '#222',
+            border: isListening ? '2px solid #d97757' : '2px solid #333',
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32,
             cursor: 'pointer', transition: 'all 0.3s ease',
-            boxShadow: isListening ? '0 0 30px #22c55e33' : 'none',
+            boxShadow: isListening ? '0 0 30px #d9775733' : 'none',
             animation: isListening ? 'pulse-dot 1.5s infinite' : 'none',
           }} onClick={handleListen}>
             🎤
@@ -107,7 +107,7 @@ export default function VoiceInputScreen() {
               max="100"
               value={volume}
               onChange={e => setVolume(Number(e.target.value))}
-              style={{ width: '100%', accentColor: '#22c55e' }}
+              style={{ width: '100%', accentColor: '#d97757' }}
             />
           </div>
         </div>

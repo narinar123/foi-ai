@@ -75,9 +75,9 @@ export default function KeyboardScreen() {
               <button
                 onClick={() => setRecording(recording === item.id ? null : item.id)}
                 style={{
-                  background: recording === item.id ? '#22c55e15' : '#2a2a2a',
-                  border: recording === item.id ? '1px solid #22c55e' : '1px solid #333',
-                  color: recording === item.id ? '#22c55e' : '#ccc',
+                  background: recording === item.id ? '#d9775715' : '#2a2a2a',
+                  border: recording === item.id ? '1px solid #d97757' : '1px solid #333',
+                  color: recording === item.id ? '#d97757' : '#ccc',
                   borderRadius: 6, padding: '5px 12px',
                   fontSize: 13, cursor: 'pointer', fontFamily: 'monospace', fontWeight: 500,
                   minWidth: 80, textAlign: 'center',
@@ -92,7 +92,7 @@ export default function KeyboardScreen() {
 
         <div style={{ marginTop: 16, display: 'flex', gap: 10 }}>
           <button style={{
-            background: '#22c55e15', border: '1px solid #22c55e', color: '#22c55e',
+            background: '#d9775715', border: '1px solid #d97757', color: '#d97757',
             borderRadius: 6, padding: '7px 16px', fontSize: 13, cursor: 'pointer',
           }}>
             Save Changes

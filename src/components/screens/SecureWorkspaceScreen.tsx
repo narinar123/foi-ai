@@ -19,14 +19,14 @@ export default function SecureWorkspaceScreen() {
 
         {/* Security status */}
         <div style={{
-          background: encEnabled ? '#1a2e1a' : '#2e1a1a',
-          border: `1px solid ${encEnabled ? '#2a4a2a' : '#4a2a2a'}`,
+          background: encEnabled ? '#2e1a0a' : '#2e1a1a',
+          border: `1px solid ${encEnabled ? '#4a2a0a' : '#4a2a2a'}`,
           borderRadius: 12, padding: '20px 24px', marginBottom: 20,
           display: 'flex', alignItems: 'center', gap: 16,
         }}>
           <div style={{ fontSize: 36 }}>{encEnabled ? '🔐' : '🔓'}</div>
           <div>
-            <div style={{ fontSize: 15, fontWeight: 600, color: encEnabled ? '#22c55e' : '#ef4444', marginBottom: 4 }}>
+            <div style={{ fontSize: 15, fontWeight: 600, color: encEnabled ? '#d97757' : '#ef4444', marginBottom: 4 }}>
               {encEnabled ? 'Workspace Secured' : 'Workspace Unlocked'}
             </div>
             <div style={{ fontSize: 12, color: '#666' }}>
@@ -54,7 +54,7 @@ export default function SecureWorkspaceScreen() {
           </div>
           {[
             { label: 'End-to-end encryption', desc: 'Encrypt all tasks, messages, and files with AES-256.', value: encEnabled, setter: setEncEnabled },
-            { label: 'Biometric authentication', desc: 'Use Touch ID or Face ID to unlock QoderWork.', value: biometric, setter: setBiometric },
+            { label: 'Biometric authentication', desc: 'Use Touch ID or Face ID to unlock FOI.AI.', value: biometric, setter: setBiometric },
             { label: 'Audit log', desc: 'Record all workspace actions for compliance review.', value: auditLog, setter: setAuditLog },
             { label: 'Sandbox mode', desc: 'Run AI tasks in an isolated environment.', value: sandboxMode, setter: setSandboxMode },
           ].map((setting, i) => (
@@ -90,7 +90,7 @@ export default function SecureWorkspaceScreen() {
                 type="range" min="5" max="120" step="5"
                 value={sessionTimeout}
                 onChange={e => setSessionTimeout(e.target.value)}
-                style={{ flex: 1, accentColor: '#22c55e' }}
+                style={{ flex: 1, accentColor: '#d97757' }}
               />
               <span style={{ fontSize: 13, color: '#ccc', minWidth: 30 }}>{sessionTimeout}m</span>
             </div>
@@ -120,7 +120,7 @@ export default function SecureWorkspaceScreen() {
               </div>
             ))}
             <button style={{
-              marginTop: 4, background: 'none', border: 'none', color: '#22c55e', fontSize: 12, cursor: 'pointer',
+              marginTop: 4, background: 'none', border: 'none', color: '#d97757', fontSize: 12, cursor: 'pointer',
             }}>
               View full audit log →
             </button>
