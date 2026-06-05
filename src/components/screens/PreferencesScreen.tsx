@@ -2,19 +2,40 @@
 import React, { useState } from 'react';
 import Dropdown from '@/components/Dropdown';
 
-export default function PreferencesScreen() {
-  const [lang, setLang] = useState('en');
-  const [theme, setTheme] = useState('dark');
-  const [uiStyle, setUiStyle] = useState('glass');
-  const [typeface, setTypeface] = useState('sans');
-  const [textSize, setTextSize] = useState('small');
-  
-  const [panelPos, setPanelPos] = useState('right');
-  const [previewMode, setPreviewMode] = useState('new');
+import { useStore } from '../../store/useStore';
 
-  const [promptSuggestions, setPromptSuggestions] = useState(true);
-  const [expandTools, setExpandTools] = useState(true);
-  const [showExecution, setShowExecution] = useState(true);
+export default function PreferencesScreen() {
+  const language = useStore(state => state.language);
+  const setLanguage = useStore(state => state.setLanguage);
+  
+  const theme = useStore(state => state.theme);
+  const setTheme = useStore(state => state.setTheme);
+  
+  const uiStyle = useStore(state => state.interfaceMode);
+  const setUiStyle = useStore(state => state.setInterfaceMode);
+  
+  const typeface = useStore(state => state.typeface);
+  const setTypeface = useStore(state => state.setTypeface);
+  
+  const textSize = useStore(state => state.textSize);
+  const setTextSize = useStore(state => state.setTextSize);
+  
+  const autoReply = useStore(state => state.autoReply);
+  const setAutoReply = useStore(state => state.setAutoReply);
+  const panelPos = useStore(state => state.panelPos);
+  const setPanelPos = useStore(state => state.setPanelPos);
+  
+  const previewMode = useStore(state => state.previewMode);
+  const setPreviewMode = useStore(state => state.setPreviewMode);
+
+  const promptSuggestions = useStore(state => state.promptSuggestions);
+  const setPromptSuggestions = useStore(state => state.setPromptSuggestions);
+  
+  const expandTools = useStore(state => state.expandTools);
+  const setExpandTools = useStore(state => state.setExpandTools);
+  
+  const showExecution = useStore(state => state.showExecution);
+  const setShowExecution = useStore(state => state.setShowExecution);
 
   return (
     <div style={{ padding: '48px 64px', maxWidth: 900, margin: '0 auto', height: '100%', overflowY: 'auto' }}>
@@ -33,12 +54,12 @@ export default function PreferencesScreen() {
               <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Select interface language</div>
             </div>
             <Dropdown 
-              value={lang} 
-              onChange={setLang}
+              value={language} 
+              onChange={setLanguage}
               options={[
-                { label: 'English', value: 'en' },
-                { label: 'Spanish', value: 'es' },
-                { label: 'French', value: 'fr' }
+                { label: 'English', value: 'English' },
+                { label: 'Spanish', value: 'Spanish' },
+                { label: 'French', value: 'French' }
               ]}
             />
           </div>
@@ -51,9 +72,9 @@ export default function PreferencesScreen() {
               value={theme} 
               onChange={setTheme}
               options={[
-                { label: 'Light', value: 'light' },
-                { label: 'Dark', value: 'dark' },
-                { label: 'System', value: 'system' }
+                { label: 'Light', value: 'Light' },
+                { label: 'Dark', value: 'Dark' },
+                { label: 'Match system', value: 'Match system' }
               ]}
             />
           </div>

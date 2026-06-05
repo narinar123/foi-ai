@@ -1,25 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  status: 'todo' | 'in-progress' | 'done';
-}
-
-const INITIAL_TASKS: Task[] = [
-  { id: '1', title: 'Write Marketing Copy', description: 'Draft the Q3 campaign copy for LinkedIn.', status: 'todo' },
-  { id: '2', title: 'Data Analysis', description: 'Analyze the recent user engagement data.', status: 'in-progress' },
-  { id: '3', title: 'Deploy App', description: 'Push the latest build to Vercel production.', status: 'done' },
-];
+import { useStore, Task } from '../../store/useStore';
 
 export default function DeskScreen() {
-  const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
-
-  const moveTask = (id: string, newStatus: 'todo' | 'in-progress' | 'done') => {
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, status: newStatus } : t));
-  };
+  const tasks = useStore(state => state.tasks);
+  const moveTask = useStore(state => state.moveTask);
 
   const columns = [
     { id: 'todo', title: 'To Do', color: '#6b7280' },

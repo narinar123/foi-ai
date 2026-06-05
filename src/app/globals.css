@@ -57,12 +57,26 @@ html, body {
 }
 
 /* Generic Utilities */
+.flat-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s;
+}
+
+.flat-card:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 20px var(--brand-transparent);
+  border-color: rgba(217,119,87,0.3);
+}
+
 .sidebar-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 13px;
   color: var(--text-secondary);
@@ -70,14 +84,17 @@ html, body {
   border: none;
   width: 100%;
   text-align: left;
+  transition: all 0.2s ease-out;
 }
 .sidebar-item:hover {
-  background: var(--bg-hover);
+  background: rgba(255,255,255,0.05);
   color: var(--text-primary);
+  transform: translateX(4px);
 }
 .sidebar-item.active {
-  background: var(--bg-hover);
-  color: var(--text-primary);
+  background: var(--brand-transparent);
+  color: var(--brand-color);
+  font-weight: 500;
 }
 
 .pill-tab {

@@ -19,6 +19,7 @@ import AppUpdateScreen from '@/components/screens/AppUpdateScreen';
 import SecureWorkspaceScreen from '@/components/screens/SecureWorkspaceScreen';
 import ExperimentalScreen from '@/components/screens/ExperimentalScreen';
 import DeskScreen from '@/components/screens/DeskScreen';
+import AnimatedBackground from '@/components/AnimatedBackground';
 
 const SETTINGS_SCREENS = [
   'preferences', 'profile', 'system', 'voice-input', 'app-snapshot',
@@ -28,25 +29,42 @@ const SETTINGS_SCREENS = [
 function ScreenRenderer() {
   const { currentScreen } = useApp();
 
-  switch (currentScreen) {
-    case 'home': return <HomeScreen />;
-    case 'extensions-plugins': return <PluginsScreen />;
-    case 'extensions-skills': return <SkillsScreen />;
-    case 'extensions-connectors': return <ConnectorsScreen />;
-    case 'scheduled-tasks': return <ScheduledTasksScreen />;
-    case 'im-channel': return <IMChannelScreen />;
-    case 'preferences': return <PreferencesScreen />;
-    case 'profile': return <ProfileScreen />;
-    case 'system': return <SystemScreen />;
-    case 'voice-input': return <VoiceInputScreen />;
-    case 'app-snapshot': return <AppSnapshotScreen />;
-    case 'keyboard': return <KeyboardScreen />;
-    case 'app-update': return <AppUpdateScreen />;
-    case 'secure-workspace': return <SecureWorkspaceScreen />;
-    case 'experimental': return <ExperimentalScreen />;
-    case 'desk': return <DeskScreen />;
-    default: return <HomeScreen />;
-  }
+  const getScreen = () => {
+    switch (currentScreen) {
+      case 'home': return <HomeScreen />;
+      case 'extensions-plugins': return <PluginsScreen />;
+      case 'extensions-skills': return <SkillsScreen />;
+      case 'extensions-connectors': return <ConnectorsScreen />;
+      case 'scheduled-tasks': return <ScheduledTasksScreen />;
+      case 'im-channel': return <IMChannelScreen />;
+      case 'preferences': return <PreferencesScreen />;
+      case 'profile': return <ProfileScreen />;
+      case 'system': return <SystemScreen />;
+      case 'voice-input': return <VoiceInputScreen />;
+      case 'app-snapshot': return <AppSnapshotScreen />;
+      case 'keyboard': return <KeyboardScreen />;
+      case 'app-update': return <AppUpdateScreen />;
+      case 'secure-workspace': return <SecureWorkspaceScreen />;
+      case 'experimental': return <ExperimentalScreen />;
+      case 'desk': return <DeskScreen />;
+      default: return <HomeScreen />;
+    }
+  };
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={currentScreen}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.2 }}
+        style={{ height: '100%', width: '100%' }}
+      >
+        {getScreen()}
+      </motion.div>
+    </AnimatePresence>
+  );
 }
 
 function AppLayout() {
@@ -64,12 +82,16 @@ function AppLayout() {
       height: '100vh',
       background: '#111',
       overflow: 'hidden',
+      position: 'relative'
     }}>
+      <AnimatedBackground />
       {/* Main sidebar (always shown when logged in) */}
-      <Sidebar />
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        <Sidebar />
+      </div>
 
       {/* Right side — main content */}
-      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+      <div style={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative', zIndex: 10 }}>
         <ScreenRenderer />
       </div>
     </div>
