@@ -86,7 +86,7 @@ export default function PreferencesScreen() {
         {/* Sections */}
         {SECTIONS.map(section => (
           <div key={section.title} className="card" style={{ padding: '20px 24px', marginBottom: 16 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: '#888', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: 11 }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: '#888', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               {section.title}
             </div>
             {section.toggles.map((toggle_item, i) => (
