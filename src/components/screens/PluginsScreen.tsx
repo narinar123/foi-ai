@@ -1,5 +1,6 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
+import Dropdown from '@/components/Dropdown';
 
 const PLUGINS = [
   { id: '1', name: 'Product Management', desc: 'An end-to-end product management toolkit covering eight core workflows: PRD writing, user story breakdown, competitive...', skills: 8, connectors: 3, version: 'v1.1.1', icon: 'M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4' },
@@ -15,6 +16,8 @@ const PLUGINS = [
 ];
 
 export default function PluginsScreen() {
+  const [filter, setFilter] = useState('all');
+  
   return (
     <div style={{ padding: '48px 64px', maxWidth: 1200, margin: '0 auto', height: '100%', overflowY: 'auto' }}>
       
@@ -57,11 +60,16 @@ export default function PluginsScreen() {
           <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-secondary)', marginLeft: 8 }}>Installed</span>
           <span style={{ background: '#222', padding: '2px 6px', borderRadius: 4, fontSize: 12, color: 'var(--text-secondary)' }}>0</span>
         </div>
-        <button className="dropdown-btn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
-          All
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
+        <Dropdown
+          value={filter}
+          onChange={setFilter}
+          options={[
+            { label: 'All', value: 'all' },
+            { label: 'Installed', value: 'installed' },
+            { label: 'Updates', value: 'updates' }
+          ]}
+          icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>}
+        />
       </div>
 
       {/* Grid */}

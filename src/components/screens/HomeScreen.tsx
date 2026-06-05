@@ -1,8 +1,11 @@
 'use client';
 import React, { useState } from 'react';
+import Dropdown from '@/components/Dropdown';
 
 export default function HomeScreen() {
   const [query, setQuery] = useState('');
+  const [channel, setChannel] = useState('general');
+  const [model, setModel] = useState('qwen');
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
@@ -45,20 +48,31 @@ export default function HomeScreen() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                 </button>
                 <button className="chat-tool-btn" style={{ fontSize: 13, fontWeight: 600, fontFamily: 'serif' }}>A</button>
-                <button className="dropdown-btn" style={{ background: '#2a2a2a', border: 'none' }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                  General
-                  <div style={{ width: 6, height: 6, background: '#3b82f6', borderRadius: '50%', marginLeft: 4 }}></div>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
+                <Dropdown
+                  value={channel}
+                  onChange={setChannel}
+                  variant="flat"
+                  options={[
+                    { label: 'General', value: 'general' },
+                    { label: 'Project A', value: 'project-a' },
+                    { label: 'Team Chat', value: 'team' }
+                  ]}
+                  icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>}
+                />
               </div>
 
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                <button className="dropdown-btn" style={{ border: 'none' }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 22 12 17 22 22 12 2"></polygon></svg>
-                  Qwen3.7-M...
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
+                <Dropdown
+                  value={model}
+                  onChange={setModel}
+                  variant="flat"
+                  options={[
+                    { label: 'Qwen3.7-M...', value: 'qwen' },
+                    { label: 'Claude 3.5...', value: 'claude' },
+                    { label: 'GPT-4o', value: 'gpt4' }
+                  ]}
+                  icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 22 12 17 22 22 12 2"></polygon></svg>}
+                />
                 <button className="chat-tool-btn" style={{ background: 'transparent' }}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
                 </button>
