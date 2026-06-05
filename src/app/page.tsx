@@ -66,10 +66,7 @@ function AppLayout() {
       overflow: 'hidden',
     }}>
       {/* Main sidebar (always shown when logged in) */}
-      <Sidebar
-        isSettingsMode={isSettings}
-        onBack={() => setCurrentScreen('home')}
-      />
+      <Sidebar />
 
       {/* Right side — main content */}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
