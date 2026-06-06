@@ -1,7 +1,9 @@
 'use client';
 import React, { useState } from 'react';
 import { AppProvider, useApp } from '@/context/AppContext';
+import { AnimatePresence, motion } from 'framer-motion';
 import Sidebar from '@/components/Sidebar';
+import RightMenu from '@/components/RightMenu';
 import WelcomeScreen from '@/components/screens/WelcomeScreen';
 import HomeScreen from '@/components/screens/HomeScreen';
 import SkillsScreen from '@/components/screens/SkillsScreen';
@@ -85,6 +87,7 @@ function AppLayout() {
       position: 'relative'
     }}>
       <AnimatedBackground />
+      <RightMenu />
       {/* Main sidebar (always shown when logged in) */}
       <div style={{ position: 'relative', zIndex: 10 }}>
         <Sidebar />
