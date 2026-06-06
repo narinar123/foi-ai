@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { signOut, useSession } from 'next-auth/react';
+// @ts-ignore
 import { load } from '@cashfreepayments/cashfree-js';
 
 export default function RightMenu() {
