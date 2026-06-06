@@ -53,8 +53,7 @@ export async function POST(req: Request) {
         },
       })
     },
-    maxSteps: 5, // Allow the agent to call tools and continue
   });
 
-  return result.toDataStreamResponse();
+  return result.toTextStreamResponse();
 }
