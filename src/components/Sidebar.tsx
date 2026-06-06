@@ -9,7 +9,7 @@ export default function Sidebar() {
   const { tasks } = useStore();
 
   const handleExtensionClick = (screen: string) => {
-    setCurrentScreen(screen);
+    setCurrentScreen(screen as any);
   };
 
   return (
