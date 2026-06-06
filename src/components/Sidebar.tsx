@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
-
+import { useStore } from '@/store/useStore';
 export default function Sidebar() {
   const { currentScreen, setCurrentScreen } = useApp();
   const [tab, setTab] = useState<'Tasks' | 'Channels'>('Tasks');
